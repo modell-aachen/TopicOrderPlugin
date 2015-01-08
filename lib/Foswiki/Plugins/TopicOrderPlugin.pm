@@ -24,13 +24,16 @@ sub initPlugin {
       return 0;
   }
 
+  my $mappings = $Foswiki::cfg{Plugins}{TopicOrderPlugin}{Mappings} || {};
+  return 1 unless $mappings->{$web};
+
   Foswiki::Meta::registerMETA('TOPICORDER', many => 1);
   Foswiki::Meta::registerMETA('TOPICPOSITION', many => 0);
 
   Foswiki::Func::registerTagHandler( 'TOPICORDER', \&_tagTOPICORDER );
   Foswiki::Func::registerRESTHandler( 'reorder', \&_restREORDER );
 
-  return 1 unless ( Foswiki::Func::getContext()->{'edit'} );
+  # return 1 unless ( Foswiki::Func::getContext()->{'edit'} );
 
   my $debug = $Foswiki::cfg{Plugins}{TopicOrderPlugin}{Debug} || 0;
   my $suffix = $debug ? '' : '.min';

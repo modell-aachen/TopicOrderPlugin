@@ -40,6 +40,12 @@
         // update steps counter
         updateSteps(opts.stepCol);
 
+        var prefs = foswiki.preferences;
+        var pattern = new RegExp( '^' + prefs.SCRIPTURL + '/edit' );
+        if ( !pattern.test( window.location.href ) )
+            return;
+
+
         // Drag'n Drop brought to you by jqUI
         $body.sortable({
             cursor: "move",
