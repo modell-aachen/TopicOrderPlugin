@@ -121,10 +121,19 @@
                 var o = order[i];
                 var pattern = new RegExp(o.name);
                 if (pattern.test(link.pathname)) {
-                    $(row).data('order', o.value);
-                    $(row).data('link', o.name);
+                    $row.data('order', o.value);
+                    $row.data('link', o.name);
                     break;
                 }
+            }
+
+            var path = link.pathname;
+            var split = path.split('/');
+            var len = split.length;
+            if ( len >= 2 ) {
+                var topic = split[len - 1];
+                var web = split[len - 2];
+                $row.data('link', web + '.' + topic);
             }
         }
     };
