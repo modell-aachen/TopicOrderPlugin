@@ -19,7 +19,9 @@ pub/System/TopicOrderPlugin/bower_components/datatables/media/images/sort_desc.p
 pub/System/TopicOrderPlugin/bower_components/datatables/media/images/sort_desc_disabled.png 0644
 pub/System/TopicOrderPlugin/bower_components/datatables/media/js/jquery.dataTables.js 0644
 pub/System/TopicOrderPlugin/bower_components/datatables/media/js/jquery.dataTables.min.js 0644
+pub/System/TopicOrderPlugin/bower_components/underscore/underscore-min.map 0644
 pub/System/TopicOrderPlugin/bower_components/underscore/underscore-min.js 0644
+pub/System/TopicOrderPlugin/bower_components/underscore/underscore.map 0644
 pub/System/TopicOrderPlugin/bower_components/underscore/underscore.js 0644
 pub/System/TopicOrderPlugin/scripts/topicorder.js 0644
 pub/System/TopicOrderPlugin/scripts/topicorder.min.js 0644
