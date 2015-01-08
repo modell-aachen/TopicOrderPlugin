@@ -1,0 +1,7 @@
+.topicorder .order, .topicorder .opts {
+  display:none !important;
+}
+
+.topicorder .table table.dataTable thead th {
+  padding:.4em .5em;border-bottom:none;
+}

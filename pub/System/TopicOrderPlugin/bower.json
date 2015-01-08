@@ -1,0 +1,22 @@
+{
+  "name": "TopicOrderPlugin",
+  "version": "1.0.0",
+  "authors": [
+    "Sven Meyer <meyer@modell-aachen.de>"
+  ],
+  "description": "",
+  "license": "GPLv3",
+  "homepage": "http://www.modell-aachen.de",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "datatables": "~1.10.4",
+    "underscore": "~1.7.0"
+  }
+}
