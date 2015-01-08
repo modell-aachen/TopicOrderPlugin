@@ -30,7 +30,7 @@ sub initPlugin {
   Foswiki::Func::registerTagHandler( 'TOPICORDER', \&_tagTOPICORDER );
   Foswiki::Func::registerRESTHandler( 'reorder', \&_restREORDER );
 
-  # return 1 unless ( Foswiki::Func::getContext()->{'edit'} );
+  return 1 unless ( Foswiki::Func::getContext()->{'edit'} );
 
   my $debug = $Foswiki::cfg{Plugins}{TopicOrderPlugin}{Debug} || 0;
   my $suffix = $debug ? '' : '.min';
