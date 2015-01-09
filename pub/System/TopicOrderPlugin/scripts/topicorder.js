@@ -42,6 +42,7 @@
 
         // sort rows
         var sorted = _.sortBy($body.find('tr'), function(row) {
+            $(row).removeClass('foswikiTableRowdataBg0 foswikiTableRowdataBg1');
             return $(row).data('order');
         });
 
