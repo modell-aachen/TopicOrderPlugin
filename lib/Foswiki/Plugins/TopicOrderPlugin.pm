@@ -24,16 +24,11 @@ sub initPlugin {
       return 0;
   }
 
-  my $mappings = $Foswiki::cfg{Plugins}{TopicOrderPlugin}{Mappings} || {};
-  return 1 unless $mappings->{$web};
-
   Foswiki::Meta::registerMETA('TOPICORDER', many => 1);
   Foswiki::Meta::registerMETA('TOPICPOSITION', many => 0);
 
   Foswiki::Func::registerTagHandler( 'TOPICORDER', \&_tagTOPICORDER );
   Foswiki::Func::registerRESTHandler( 'reorder', \&_restREORDER );
-
-  # return 1 unless ( Foswiki::Func::getContext()->{'edit'} );
 
   my $debug = $Foswiki::cfg{Plugins}{TopicOrderPlugin}{Debug} || 0;
   my $suffix = $debug ? '' : '.min';
@@ -45,15 +40,18 @@ sub initPlugin {
   my $dt = "$bower/datatables/media";
   my $u = "$bower/underscore";
 
+  my $mappings = $Foswiki::cfg{Plugins}{TopicOrderPlugin}{Mappings} || {};
+  return 1 unless $mappings->{$web};
+
   Foswiki::Func::addToZone( 'script', 'TOPICORDERPLUGIN::SCRIPTS', <<SCRIPT, 'JQUERYPLUGIN::FOSWIKI' );
-<script type="text/javascript" src="$dt/js/jquery.dataTables$suffix.js"></script>
-<script type="text/javascript" src="$u/underscore$usuffix.js"></script>
-<script type="text/javascript" src="$scripts/topicorder$suffix.js"></script>
+<script type="text/javascript" src="$dt/js/jquery.dataTables$suffix.js?version=$RELEASE"></script>
+<script type="text/javascript" src="$u/underscore$usuffix.js?version=$RELEASE"></script>
+<script type="text/javascript" src="$scripts/topicorder$suffix.js?version=$RELEASE"></script>
 SCRIPT
 
   Foswiki::Func::addToZone( 'head', 'TOPICORDERPLUGIN::STYLES', <<STYLE );
-<link rel='stylesheet' type='text/css' media='all' href='$dt/css/jquery.dataTables$suffix.css' />
-<link rel='stylesheet' type='text/css' media='all' href='$styles/topicorder$suffix.css' />
+<link rel='stylesheet' type='text/css' media='all' href='$dt/css/jquery.dataTables$suffix.css?version=$RELEASE' />
+<link rel='stylesheet' type='text/css' media='all' href='$styles/topicorder$suffix.css?version=$RELEASE' />
 STYLE
 
   return 1;
@@ -66,7 +64,7 @@ sub afterSaveHandler {
   return if ($w eq 0 || $t eq 0);
 
   my $name = 'TOPICORDER';
-  my ($parentMeta, $text) = Foswiki::Func::readTopic( $w, $t );
+  my ($parentMeta, $txt) = Foswiki::Func::readTopic( $w, $t );
   my $existing = $parentMeta->get( $name, "$web.$topic");
   return if defined $existing;
 
