@@ -4,8 +4,23 @@
     var order, opts;
 
     $(document).ready(function() {
-        opts = JSON.parse($('.topicorder .opts').text());
-        order = JSON.parse($('.topicorder .order').text());
+        var $opts = $('.topicorder .opts');
+        if ( $opts.length === 0 ) return;
+
+        var $order = $('.topicorder .order');
+        if ( $order.length === 0 ) return;
+
+        try {
+            opts = JSON.parse($opts.text());
+            order = JSON.parse($order.text());
+        } catch ( e ) {
+            if ( window.console && console.error ) {
+                console.error( e );
+            }
+
+            return;
+        }
+
         var $table = $('.topicorder .table table');
         var $body = $table.find('tbody');
         var start, end;
