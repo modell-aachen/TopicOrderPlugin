@@ -11,8 +11,9 @@
         if ( $order.length === 0 ) return;
 
         try {
-            opts = JSON.parse($opts.text());
-            order = JSON.parse($order.text());
+            console.log($opts.text());
+            opts = $.parseJSON($opts.text());
+            order = $.parseJSON($order.text());
         } catch ( e ) {
             if ( window.console && console.error ) {
                 console.error( e );
@@ -22,6 +23,14 @@
         }
 
         var $table = $('.topicorder .table table');
+
+        // "fix" styling
+        $table.removeClass('foswikiTable');
+        $table.find('tr, th, td').each( function() {
+            $(this).removeClass();
+        });
+
+
         var $body = $table.find('tbody');
         var start, end;
 
@@ -40,10 +49,23 @@
             }
         });
 
-        // sort rows
+        // sort rows and apply styling according to their maturity value
         var sorted = _.sortBy($body.find('tr'), function(row) {
-            $(row).removeClass('foswikiTableRowdataBg0 foswikiTableRowdataBg1');
-            return $(row).data('order');
+            var $tr = $(row);
+
+            if ( opts.maturityCol >= 0 && typeof opts.maturity === "object" ) {
+                var tds = $tr.find('td');
+                var maturity = parseInt( $(tds[opts.maturityCol]).text() );
+                for( var color in opts.maturity ) {
+                    var c = opts.maturity[color];
+                    if ( maturity >= c.from && maturity <= c.to ) {
+                        $tr.css('background-color', c.color);
+                        break;
+                    }
+                }
+            }
+
+            return $tr.data('order');
         });
 
         // apply sorted rows to the actual DataTable
@@ -56,6 +78,7 @@
         // update steps counter
         updateSteps(opts.stepCol);
 
+        // disable drag'n drop while not editing
         var prefs = foswiki.preferences;
         var pattern = new RegExp( '^' + prefs.SCRIPTURL + '/edit' );
         if ( !pattern.test( window.location.href ) )
