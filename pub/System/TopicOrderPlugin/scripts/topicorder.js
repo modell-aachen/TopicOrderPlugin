@@ -11,7 +11,6 @@
         if ( $order.length === 0 ) return;
 
         try {
-            console.log($opts.text());
             opts = $.parseJSON($opts.text());
             order = $.parseJSON($order.text());
         } catch ( e ) {
