@@ -1,0 +1,32 @@
+.topicorder .order, .topicorder .opts {
+  display:none !important;
+}
+
+.topicorder .table table.dataTable {
+  border-bottom: 1px solid #b2b2b2 !important;
+}
+
+.topicorder .table table.dataTable thead tr {
+  background-color: #f3f3f3;
+}
+
+.topicorder .table table.dataTable tbody tr:nth-child(even) {
+  background-color: #f8f8f8;
+}
+
+.topicorder .table table.dataTable tbody tr:nth-child(odd) {
+  background-color: #ffffff;
+}
+
+.topicorder .table table.dataTable tbody tr:hover {
+  background-color: #e0efff;
+}
+
+.topicorder .table table.dataTable thead th {
+  padding:.4em .5em;border-bottom:none;
+  border-bottom: 1px solid #b2b2b2;
+}
+
+.topicorder .table table.dataTable thead th a {
+  color: #333;
+}
