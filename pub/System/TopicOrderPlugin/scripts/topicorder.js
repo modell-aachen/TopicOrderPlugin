@@ -22,38 +22,21 @@
         }
 
         var $table = $('.topicorder .table table');
+        var $tbody = $table.find('tbody');
 
         // "fix" styling
         $table.removeClass('foswikiTable');
-        $table.find('tr, th, td').each( function() {
+        $tbody.find('tr, th, td').each( function() {
             $(this).removeClass();
         });
 
-
-        var $body = $table.find('tbody');
-        var start, end;
-
-        // initialize DataTable
-        var $dt = $table.dataTable({
-            autoWidth: true,
-            info: false,
-            jQueryUI: false,
-            lengthChange: false,
-            ordering: false,
-            paging: false,
-            searching: false,
-            stateSave: true,
-            rowCallback: function(row, data, index) {
-                updateDataAttrs(row);
-            }
-        });
-
         // sort rows and apply styling according to their maturity value
-        var sorted = _.sortBy($body.find('tr'), function(row) {
+        var start, end;
+        var sorted = _.sortBy($tbody.find('tr'), function(row) {
             var $tr = $(row);
+            var tds = $tr.find('td');
 
             if ( opts.maturityCol >= 0 && typeof opts.maturity === "object" ) {
-                var tds = $tr.find('td');
                 var maturity = parseInt( $(tds[opts.maturityCol]).text() );
                 for( var color in opts.maturity ) {
                     var c = opts.maturity[color];
@@ -64,14 +47,30 @@
                 }
             }
 
-            return $tr.data('order');
+            var linkCol = tds[opts.linkCol];
+            var $a = $(linkCol).find('a');
+            var link = $a.attr('href');
+            if ( link && link.length > 0 ) {
+                link = link.substr(1).replace('/', '.');
+            }
+
+            var filter = {name: link};
+            var entry = _.findWhere( order, filter );
+            var pos = 0;
+
+            if ( entry ) {
+                pos = entry.value || 0;
+            }
+
+            $tr.attr('data-order', pos );
+            return parseInt( pos );
         });
 
-        // apply sorted rows to the actual DataTable
-        $body.empty();
+        // apply sorted rows to the actual table
+        $tbody.empty();
         _.each(sorted, function(row) {
             updateDataAttrs(row);
-            $body.append(row);
+            $tbody.append(row);
         });
 
         // update steps counter
@@ -83,9 +82,8 @@
         if ( !pattern.test( window.location.href ) )
             return;
 
-
         // Drag'n Drop brought to you by jqUI
-        $body.sortable({
+        $tbody.sortable({
             cursor: "move",
             start: function(event, ui) {
                 start = ui.item.prevAll().length + 1;
@@ -108,8 +106,8 @@
         var deferred = $.Deferred();
         var arr = [];
         try {
-            var $body = $('.topicorder .table table tbody');
-            var rows = $body.find('tr');
+            var $tbody = $('.topicorder .table table tbody');
+            var rows = $tbody.find('tr');
             for (var i = 0; i < rows.length; ++i) {
                 var $row = $(rows[i]);
                 $row.data('order', i + 1);
@@ -147,8 +145,8 @@
 
     var updateSteps = function(colIndex) {
         var step = 1;
-        var $body = $('.topicorder .table table tbody');
-        $body.find('tr').each(function() {
+        var $tbody = $('.topicorder .table table tbody');
+        $tbody.find('tr').each(function() {
             var tds = $(this).find('td');
             $(tds[colIndex]).text(step++);
         });
