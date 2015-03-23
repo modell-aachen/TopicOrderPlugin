@@ -36,23 +36,20 @@ sub initPlugin {
   my $base = '%PUBURLPATH%/%SYSTEMWEB%/TopicOrderPlugin';
   my $scripts = "$base/scripts";
   my $styles = "$base/styles";
-  my $bower = "$base/bower_components";
-  my $dt = "$bower/datatables/media";
-  my $u = "$bower/underscore";
 
   my $mappings = $Foswiki::cfg{Plugins}{TopicOrderPlugin}{Mappings} || {};
   return 1 unless $mappings->{$web};
 
   Foswiki::Func::addToZone( 'script', 'TOPICORDERPLUGIN::SCRIPTS', <<SCRIPT, 'JQUERYPLUGIN::FOSWIKI' );
-<script type="text/javascript" src="$dt/js/jquery.dataTables$suffix.js?version=$RELEASE"></script>
-<script type="text/javascript" src="$u/underscore$usuffix.js?version=$RELEASE"></script>
 <script type="text/javascript" src="$scripts/topicorder$suffix.js?version=$RELEASE"></script>
 SCRIPT
 
   Foswiki::Func::addToZone( 'head', 'TOPICORDERPLUGIN::STYLES', <<STYLE );
-<link rel='stylesheet' type='text/css' media='all' href='$dt/css/jquery.dataTables$suffix.css?version=$RELEASE' />
 <link rel='stylesheet' type='text/css' media='all' href='$styles/topicorder$suffix.css?version=$RELEASE' />
 STYLE
+
+  Foswiki::Plugins::JQueryPlugin::createPlugin( "jqp::underscore" );
+  Foswiki::Plugins::JQueryPlugin::createPlugin( "ui::sortable" );
 
   return 1;
 }
@@ -133,13 +130,20 @@ sub _restREORDER {
 
   my $param = $query->{param}->{payload}[0];
   my $payload = decode_json( $param );
-  
+
+Foswiki::Func::writeWarning( "payload -> $param" );
+
   my ($web, $topic) = Foswiki::Func::normalizeWebTopicName( $payload->{web}, $payload->{topic} );
   my ($meta, $text) = Foswiki::Func::readTopic( $web, $topic );
 
   my $arr = $payload->{payload};
   foreach (@$arr) {
     my $entry = $_;
+
+my $link = $entry->{link};
+my $order = $entry->{order};
+Foswiki::Func::writeWarning( "$order -> $link" );
+
     my $new = {
       name => $entry->{link},
       value => $entry->{order}
@@ -148,9 +152,9 @@ sub _restREORDER {
     $meta->putKeyed( 'TOPICORDER', $new );
   }
 
-  $meta->saveAs( $web, $topic, minor => 1 );
+  my%opts = (minor => 1, dontloag => 1);
+  $meta->saveAs( $web, $topic, %opts );
   $meta->finish();
-  
 
   return "";
 }
