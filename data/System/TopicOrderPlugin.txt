@@ -22,7 +22,7 @@ For a proper installation there are a two steps required:
 ---+++ Mappings
 
 Switch to _/bin/configure_ and open the TopicOrderPlugin tab within the extensions menu.
-Once opened you have to tell this plugin the according form field name in which the related processes are stored. Those mappings are web based:
+Once opened you have to tell this plugin the according rm field name in which the related processes are stored. Those mappings are web based:
 
 e.g. 
 <verbatim>
