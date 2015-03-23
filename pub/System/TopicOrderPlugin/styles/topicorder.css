@@ -2,31 +2,44 @@
   display:none !important;
 }
 
-.topicorder .table table.dataTable {
+.topicorder .table table {
   border-bottom: 1px solid #b2b2b2 !important;
+  min-width: 100%;
 }
 
-.topicorder .table table.dataTable thead tr {
+.topicorder .table table thead tr {
   background-color: #f3f3f3;
 }
 
-.topicorder .table table.dataTable tbody tr:nth-child(even) {
+.topicorder .table table tbody tr {
+  cursor: move;
+}
+
+.topicorder .table table tbody td:first-child {
+  background-image: url('../assets/sortable.png');
+  background-repeat: no-repeat;
+  background-position: left center;
+  padding-left: 25px;
+  min-width: 40px;
+}
+
+.topicorder .table table tbody tr:nth-child(even) {
   background-color: #f8f8f8;
 }
 
-.topicorder .table table.dataTable tbody tr:nth-child(odd) {
+.topicorder .table table tbody tr:nth-child(odd) {
   background-color: #ffffff;
 }
 
-.topicorder .table table.dataTable tbody tr:hover {
+.topicorder .table table tbody tr:hover {
   background-color: #e0efff;
 }
 
-.topicorder .table table.dataTable thead th {
+.topicorder .table table thead th {
   padding:.4em .5em;border-bottom:none;
   border-bottom: 1px solid #b2b2b2;
 }
 
-.topicorder .table table.dataTable thead th a {
+.topicorder .table table thead th a {
   color: #333;
 }
