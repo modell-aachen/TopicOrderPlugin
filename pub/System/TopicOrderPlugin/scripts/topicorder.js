@@ -30,22 +30,11 @@
             $(this).removeClass();
         });
 
-        // sort rows and apply styling according to their maturity value
+        // sort rows
         var start, end;
         var sorted = _.sortBy($tbody.find('tr'), function(row) {
             var $tr = $(row);
             var tds = $tr.find('td');
-
-            if ( opts.maturityCol >= 0 && typeof opts.maturity === "object" ) {
-                var maturity = parseInt( $(tds[opts.maturityCol]).text() );
-                for( var color in opts.maturity ) {
-                    var c = opts.maturity[color];
-                    if ( maturity >= c.from && maturity <= c.to ) {
-                        $tr.css('background-color', c.color);
-                        break;
-                    }
-                }
-            }
 
             var linkCol = tds[opts.linkCol];
             var $a = $(linkCol).find('a');
