@@ -25,9 +25,11 @@
         }
 
         var $table = $('.topicorder .table table');
-        var $thead = $table.find('thead');
-        if ( $thead.length > 0 ) {
-            $('<th></th>').appendTo( $thead.find('tr') );
+        if ( $('.modacEditPage').length > 0 ) {
+            var $thead = $table.find('thead');
+            if ( $thead.length > 0 ) {
+                $('<th></th>').appendTo( $thead.find('tr') );
+            }
         }
 
         var $tbody = $table.find('tbody');
@@ -64,8 +66,10 @@
                 pos = entry.value || 0;
             }
 
-            var $trash = $('<td class="trash" title="' + tooltip + '">&nbsp;</td>');
-            $trash.appendTo( $tr );
+            if ( $('.modacEditPage').length > 0 ) {
+                var $trash = $('<td class="trash" title="' + tooltip + '">&nbsp;</td>');
+                $trash.appendTo( $tr );
+            }
 
             $tr.attr('data-order', pos );
             return parseInt( pos );
@@ -205,6 +209,8 @@
             if ( !$this.data('detached') ) {
                 var tds = $this.find('td');
                 $(tds[colIndex]).text(step++);
+            } else {
+                $this.remove();
             }
         });
     };
