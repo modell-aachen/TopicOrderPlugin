@@ -202,7 +202,6 @@
         var $tbody = $('.topicorder .table table tbody');
         $tbody.find('tr').each(function() {
             var $this = $(this);
-console.log( $this.attr('data-detached'));
             if ( !$this.data('detached') ) {
                 var tds = $this.find('td');
                 $(tds[colIndex]).text(step++);
