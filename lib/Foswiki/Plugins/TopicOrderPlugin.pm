@@ -131,18 +131,12 @@ sub _restREORDER {
   my $param = $query->{param}->{payload}[0];
   my $payload = decode_json( $param );
 
-Foswiki::Func::writeWarning( "payload -> $param" );
-
   my ($web, $topic) = Foswiki::Func::normalizeWebTopicName( $payload->{web}, $payload->{topic} );
   my ($meta, $text) = Foswiki::Func::readTopic( $web, $topic );
 
   my $arr = $payload->{payload};
   foreach (@$arr) {
     my $entry = $_;
-
-my $link = $entry->{link};
-my $order = $entry->{order};
-Foswiki::Func::writeWarning( "$order -> $link" );
 
     my $new = {
       name => $entry->{link},
