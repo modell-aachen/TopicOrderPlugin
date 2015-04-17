@@ -27,12 +27,18 @@ sub initPlugin {
   Foswiki::Meta::registerMETA('TOPICORDER', many => 1);
   Foswiki::Meta::registerMETA('TOPICPOSITION', many => 0);
 
+  my %opts = (
+    authenticate => 1,
+    validate => 0,
+    http_allow => 'POST'
+  );
+
   Foswiki::Func::registerTagHandler( 'TOPICORDER', \&_tagTOPICORDER );
-  Foswiki::Func::registerRESTHandler( 'reorder', \&_restREORDER );
+  Foswiki::Func::registerRESTHandler( 'reorder', \&_restREORDER, %opts );
+  Foswiki::Func::registerRESTHandler( 'detach', \&_restDETACH, %opts );
 
   my $debug = $Foswiki::cfg{Plugins}{TopicOrderPlugin}{Debug} || 0;
   my $suffix = $debug ? '' : '.min';
-  my $usuffix = $debug ? '' : '-min';
   my $base = '%PUBURLPATH%/%SYSTEMWEB%/TopicOrderPlugin';
   my $scripts = "$base/scripts";
   my $styles = "$base/styles";
@@ -50,6 +56,7 @@ STYLE
 
   Foswiki::Plugins::JQueryPlugin::createPlugin( "jqp::underscore" );
   Foswiki::Plugins::JQueryPlugin::createPlugin( "ui::sortable" );
+  Foswiki::Plugins::JQueryPlugin::createPlugin( "blockui" );
 
   return 1;
 }
@@ -153,13 +160,43 @@ sub _restREORDER {
   return "";
 }
 
+sub _restDETACH {
+  my ( $session, $subject, $verb, $response ) = @_;
+  my $query = $session->{request};
+
+  my $param = $query->{param}->{payload}[0];
+  my $payload = decode_json( $param );
+
+  unless ( $payload->{id} ) {
+    $response->status(405);
+    return "";
+  }
+
+  my ($web, $topic) = Foswiki::Func::normalizeWebTopicName( $payload->{web}, $payload->{topic} );
+  my ($meta, $text) = Foswiki::Func::readTopic( $web, $topic );
+  my $entry = $meta->get('TOPICORDER', $payload->{id});
+  $entry->{detached} = 1;
+  $meta->putKeyed( 'TOPICORDER', $entry );
+
+  my%opts = (minor => 1, dontloag => 1);
+  $meta->saveAs( $web, $topic, %opts );
+  $meta->finish();
+
+  return "";
+}
+
 sub _tagTOPICORDER {
   my( $session, $params, $topic, $web, $topicObject ) = @_;
 
   ($web, $topic) = Foswiki::Func::normalizeWebTopicName( $web, $topic );
   my ($meta, $text) = Foswiki::Func::readTopic( $web, $topic );
   my @order = $meta->find('TOPICORDER');
-  return encode_json( \@order );
+  my %data = (
+    order => \@order,
+    confirm => '%MAKETEXT{Do you really want to detach the selected step?}%',
+    tooltip => '%MAKETEXT{Detach}%'
+  );
+  return encode_json( \%data );
 }
 
 1;

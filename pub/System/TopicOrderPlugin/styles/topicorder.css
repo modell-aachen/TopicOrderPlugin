@@ -11,16 +11,28 @@
   background-color: #f3f3f3;
 }
 
-.topicorder .table table tbody tr {
+.modacEditPage .topicorder .table table tbody tr {
   cursor: move;
 }
 
-.topicorder .table table tbody td:first-child {
+.modacEditPage .topicorder .table table tbody td:first-child {
   background-image: url('../assets/sortable.png');
   background-repeat: no-repeat;
   background-position: left center;
+}
+
+.topicorder .table table tbody td:first-child {
   padding-left: 25px;
   min-width: 40px;
+}
+
+.topicorder td.trash {
+  background-image: url('../assets/bin.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  min-width: 16px;
+  min-height: 16px;
+  cursor: pointer;
 }
 
 .topicorder .table table tbody tr:nth-child(even) {

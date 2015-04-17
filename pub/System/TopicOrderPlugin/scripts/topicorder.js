@@ -1,7 +1,7 @@
 (function($) {
     var cnt = 0;
     var step = 1;
-    var order, opts;
+    var order, opts, confirmText, tooltip;
 
     $(document).ready(function() {
         var $opts = $('.topicorder .opts');
@@ -12,7 +12,10 @@
 
         try {
             opts = $.parseJSON($opts.text());
-            order = $.parseJSON($order.text());
+            var json = $.parseJSON($order.text());
+            order= json.order;
+            confirmText = json.confirm;
+            tooltip = json.tooltip;
         } catch ( e ) {
             if ( window.console && console.error ) {
                 console.error( e );
@@ -22,6 +25,11 @@
         }
 
         var $table = $('.topicorder .table table');
+        var $thead = $table.find('thead');
+        if ( $thead.length > 0 ) {
+            $('<th></th>').appendTo( $thead.find('tr') );
+        }
+
         var $tbody = $table.find('tbody');
 
         // "fix" styling
@@ -47,12 +55,27 @@
             var entry = _.findWhere( order, filter );
             var pos = 0;
 
+            if ( entry.detached ) {
+                $tr.attr('data-detached', 1);
+                $tr.css('display', 'none');
+            }
+
             if ( entry ) {
                 pos = entry.value || 0;
             }
 
+            var $trash = $('<td class="trash" title="' + tooltip + '">&nbsp;</td>');
+            $trash.appendTo( $tr );
+
             $tr.attr('data-order', pos );
             return parseInt( pos );
+        });
+
+        // attach click handler to the table itself (jqui sortable swallows child clicks)
+        $table.on('click', function( evt ) {
+            if ( $(evt.target).hasClass('trash') ) {
+                removeStep( evt.target );
+            }
         });
 
         // apply sorted rows to the actual table
@@ -132,12 +155,58 @@
         return deferred.promise();
     };
 
+    var removeStep = function( td ) {
+        if ( !confirm(confirmText) ) {
+            return;
+        }
+
+        var $td = $(td);
+        var $tr = $td.parent();
+        var link = $tr.data('link');
+        if ( /^\s*$/i.test( name ) ) {
+            return;
+        }
+
+        var p = foswiki.preferences;
+        var url = [p.SCRIPTURL, '/rest', p.SCRIPTSUFFIX, '/TopicOrderPlugin/detach'];
+        var payload = {
+            web: p.WEB,
+            topic: p.TOPIC,
+            id: link
+        };
+
+        $.blockUI();
+        $.ajax({
+            url: url.join(''),
+            type: 'POST',
+            data: {
+                payload: JSON.stringify(payload)
+            },
+            success: function() {
+                $tr.remove();
+                updateSteps(opts.stepCol);
+                $.unblockUI();
+            },
+            error: function(xhr, status, err) {
+                $.unblockUI();
+                if ( window.console && console.error ) {
+                    console.error( xhr );
+                    console.error( err );
+                }
+            }
+        });
+    };
+
     var updateSteps = function(colIndex) {
         var step = 1;
         var $tbody = $('.topicorder .table table tbody');
         $tbody.find('tr').each(function() {
-            var tds = $(this).find('td');
-            $(tds[colIndex]).text(step++);
+            var $this = $(this);
+console.log( $this.attr('data-detached'));
+            if ( !$this.data('detached') ) {
+                var tds = $this.find('td');
+                $(tds[colIndex]).text(step++);
+            }
         });
     };
 
