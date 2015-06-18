@@ -1,0 +1,57 @@
+.topicorder .order, .topicorder .opts {
+  display:none !important;
+}
+
+.topicorder .table table {
+  border-bottom: 1px solid #b2b2b2 !important;
+  min-width: 100%;
+}
+
+.topicorder .table table thead tr {
+  background-color: #f3f3f3;
+}
+
+.modacEditPage .topicorder .table table tbody tr {
+  cursor: move;
+}
+
+.modacEditPage .topicorder .table table tbody td:first-child {
+  background-image: url('../assets/sortable.png');
+  background-repeat: no-repeat;
+  background-position: left center;
+}
+
+.topicorder .table table tbody td:first-child {
+  padding-left: 25px;
+  min-width: 40px;
+}
+
+.topicorder td.trash {
+  background-image: url('../assets/bin.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  min-width: 16px;
+  min-height: 16px;
+  cursor: pointer;
+}
+
+.topicorder .table table tbody tr:nth-child(even) {
+  background-color: #f8f8f8;
+}
+
+.topicorder .table table tbody tr:nth-child(odd) {
+  background-color: #ffffff;
+}
+
+.topicorder .table table tbody tr:hover {
+  background-color: #e0efff;
+}
+
+.topicorder .table table thead th {
+  padding:.4em .5em;border-bottom:none;
+  border-bottom: 1px solid #b2b2b2;
+}
+
+.topicorder .table table thead th a {
+  color: #333;
+}

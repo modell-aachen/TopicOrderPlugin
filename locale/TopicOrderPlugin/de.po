@@ -1,0 +1,5 @@
+msgid "Do you really want to detach the selected step?"
+msgstr "Möchten Sie den ausgewählten Schritt wirklich entfernen?"
+
+msgid "Detach"
+msgstr "Entfernen"

@@ -1,0 +1,11 @@
+!noci
+data/System/TopicOrderPlugin.txt 0644
+lib/Foswiki/Plugins/TopicOrderPlugin.pm 0444
+lib/Foswiki/Plugins/TopicOrderPlugin/Config.spec 0444
+locale/TopicOrderPlugin/de.po 06444
+pub/System/TopicOrderPlugin/assets/sortable.png 0643
+pub/System/TopicOrderPlugin/assets/bin.png 0644
+pub/System/TopicOrderPlugin/scripts/topicorder.js 0644
+pub/System/TopicOrderPlugin/scripts/topicorder.min.js 0644
+pub/System/TopicOrderPlugin/styles/topicorder.css 0644
+pub/System/TopicOrderPlugin/styles/topicorder.min.css 0644

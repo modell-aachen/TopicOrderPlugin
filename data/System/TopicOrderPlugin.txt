@@ -1,0 +1,82 @@
+%META:TOPICPARENT{name="Plugins"}%
+---+ TopicOrderPlugin
+
+%SHORTDESCRIPTION%
+
+Learn how to create your own plugin in %SYSTEMWEB%.DevelopingPlugins.
+
+<!--
+One line description, required for extensions repository catalog.
+   * Set SHORTDESCRIPTION = %$SHORTDESCRIPTION%
+-->
+
+---++ Installation
+
+*Remark: TopicOrderPlugin has a strong dependency on ProcessesPlanningContrib*
+
+For a proper installation there are a two steps required:
+
+   1. web <-> form field mappings
+   1. template configuration
+
+---+++ Mappings
+
+Switch to _/bin/configure_ and open the TopicOrderPlugin tab within the extensions menu.
+Once opened you have to tell this plugin the according rm field name in which the related processes are stored. Those mappings are web based:
+
+e.g. 
+<verbatim>
+$Foswiki::cfg{Plugins}{TopicOrderPlugin}{Mappings} = {
+ 'Main' => 'RelatedProcess'
+};
+</verbatim>
+
+---+++ Templates
+
+Switch to the according app web, e.g. ProcessesPlanning and edit the following two templates according to your needs:
+   * ProcessEditTemplate.txt
+   * ProcessViewTemplate.txt
+
+*You have to look for the following inline JSON*.
+
+   1. stepCol: the column in which the process step number shall be displayed
+   1. linkCol: the column in which the process is linked
+   1. maturityCol: the column in which the degree of maturity (usually in percents) is displayed
+   1. maturity: color definitions for different maturity degrees.
+
+<verbatim>
+{
+  "stepCol": 0,
+  "linkCol": 1,
+  "maturityCol": 4,
+  "maturity": {
+    "red": {
+      "from": 0,
+      "to": 50,
+      "color": "#ffdfdf"
+    },
+    "orange": {
+      "from": 51,
+      "to": 80,
+      "color": "#fff8d8"
+    },
+    "green": {
+      "from": 81,
+      "to": 100,
+      "color": "#ddffdd"
+    }
+  }
+}
+</verbatim>
+
+
+---++ Plugin Info
+
+|  Author: | Foswiki:Main.SvenMeyer |
+|  Copyright: | &copy; 2015, Modell Aachen GmbH |
+|  License: | GPL ([[http://www.gnu.org/copyleft/gpl.html][GNU General Public License]]) |
+|  Release: | %$RELEASE% |
+|  Version: | %$VERSION% |
+|  Home: | http://www.modell-aachen.de |
+|  Support: | http://www.modell-aachen.de |
+
