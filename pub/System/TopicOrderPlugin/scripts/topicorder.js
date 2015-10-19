@@ -50,7 +50,7 @@
             var $a = $(linkCol).find('a');
             var link = $a.attr('href');
             if ( link && link.length > 0 ) {
-                link = link.substr(1).replace('/', '.');
+				link = link.substr(1).replace(/\//g, '.');
             }
 
             var filter = {name: link};
